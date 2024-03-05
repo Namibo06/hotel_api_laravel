@@ -13,14 +13,14 @@ class AutenticationController extends Controller
             'first_name'=>'required',
             'email'=>'required|email',
             'phone'=>'required|numeric',
-            'password'=>'required'
+            'password'=>'required|min:4'
         ]);
 
         if($validator->fails()){
             return response()->json([
                 'status'=>'422',
                 'message'=>$validator->errors()
-            ]);
+            ],422);
         }
 
         $first_name=$request->first_name;
@@ -42,14 +42,14 @@ class AutenticationController extends Controller
             return response()->json([
                 'status'=>'400',
                 'message'=> 'Não foi possível criar o usuário'
-            ]);
+            ],400);
         }
 
         return response()->json([
             'status'=>'201',
             'message'=>'Usuário criado',
             'user'=>$user
-        ]);
+        ],200);
     }
 
     public function sign_up(Request $request){
