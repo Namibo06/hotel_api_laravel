@@ -4,11 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class AutenticationController extends Controller
 {
-    public function sign_in(Request $request){
+    public function sign_up(Request $request){
         $validator = Validator::make($request->all(),[
             'first_name'=>'required',
             'email'=>'required|email',
@@ -40,20 +41,46 @@ class AutenticationController extends Controller
 
         if(!$user->save()){
             return response()->json([
-                'status'=>'400',
+                'status'=>400,
                 'message'=> 'Não foi possível criar o usuário'
             ],400);
         }
 
         return response()->json([
-            'status'=>'201',
+            'status'=>201,
             'message'=>'Usuário criado',
             'user'=>$user
         ],200);
     }
 
-    public function sign_up(Request $request){
+    public function autentication(Request $request){
+        $validator = Validator::make($request->all(),[
+            'email'=>'required|email',
+            'password'=>'required|min:4'
+        ]);
 
+        if($validator->fails()){
+            return response()->json([
+                'status'=>422,
+                'message'=>$validator->errors()
+            ],422);
+        }
+
+        $credentials=$request->only(['email','password']);
+
+        if(!$token=auth()->attempt($credentials)){
+            return response()->json([
+                'status'=>400,
+                'message'=>'Email/Senha inválidos'
+            ],400);
+        }
+
+        return response()->json([
+            'status'=>200,
+            'token'=>$token,
+            'message'=>'Usuário autenticado',
+            'user'=>Auth::user()
+        ],200);
     }
 
 }
