@@ -33,8 +33,8 @@ class HotelController extends Controller
         $hour_minute_to = Carbon::createFromFormat('H i',$request->hour_minute_to)->format('H:i');
         $avaliable=$request->avaliable;
         $suites_id=$request->suites_id;
-        //$users_id=auth()->id();
-        $users_id=$request->users_id;
+        $users_id=auth()->id();
+        //$users_id=$request->users_id;
 
         //verifica se já tem data marcada para a suite escolhida
         $busca=Hotel::where('suites_id',$suites_id)->where('avaliable','nao')->first();
@@ -67,6 +67,22 @@ class HotelController extends Controller
         return response()->json([
             'status'=>200,
             'message'=>'Horário marcado'
+        ],200);
+    }
+
+    public function check_availability(){
+        $busca = Hotel::all();
+
+        if($busca->isEmpty()){
+            return response()->json([
+                'status'=>404,
+                'result'=>'Sem horários marcados'
+            ],404);
+        }
+
+        return response()->json([
+            'status'=>200,
+            'result'=>$busca
         ],200);
     }
 }

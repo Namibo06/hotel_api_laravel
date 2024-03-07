@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AutenticationController;
 use App\Http\Controllers\HotelController;
+use App\Http\Controllers\SuitesController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,4 +15,8 @@ Route::prefix('v1/users')->group(function(){
 Route::prefix('v1/hotel')->group(function(){
     Route::post('/make_an_appointment',[HotelController::class,'make_an_appointment']);
     Route::get('/check_availability',[HotelController::class,'check_availability']);
+});
+
+Route::prefix('v1/suites')->group(function(){
+    Route::get('/allSuites',[SuitesController::class,'allSuites']);
 });
