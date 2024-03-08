@@ -19,4 +19,5 @@ Route::prefix('v1/hotel')->group(function(){
 
 Route::prefix('v1/suites')->group(function(){
     Route::get('/allSuites',[SuitesController::class,'allSuites']);
+    Route::get('/suite/{id}',[SuitesController::class,'suite']);
 });
