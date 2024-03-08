@@ -9,7 +9,8 @@ use Illuminate\Http\Request;
 class SuitesController extends Controller
 {
     public function allSuites(){
-       $suites = SuitesResource::collection(Suites::all());
+       $suites = Suites::leftJoin('hotels','hotels.suites_id','=','suites.id')
+       ->select('suites.*','hotels.avaliable')->get();
 
        if(!$suites){
         return response()->json([
@@ -26,7 +27,9 @@ class SuitesController extends Controller
     }
 
     public function suite(string $id){
-        $suite = SuitesResource::collection(Suites::where('id',$id)->get());
+        $suite = Suites::where('suites.id',$id)
+        ->leftJoin('hotels','hotels.suites_id','=','suites.id')
+        ->select('suites.*','hotels.avaliable')->get();;
 
         if(!$suite){
             return response()->json([

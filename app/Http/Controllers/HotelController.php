@@ -15,7 +15,6 @@ class HotelController extends Controller
             'hour_minute_of'=>'required',
             'date_to'=>'required',
             'hour_minute_to'=>'required',
-            'avaliable'=>'required',
             'suites_id'=>'required',
             'users_id'=>'required',
         ]);
@@ -31,9 +30,9 @@ class HotelController extends Controller
         $hour_minute_of = Carbon::createFromFormat('H i',$request->hour_minute_of)->format('H:i');
         $date_to = Carbon::createFromFormat('d m Y',$request->date_to)->format('Y-m-d');
         $hour_minute_to = Carbon::createFromFormat('H i',$request->hour_minute_to)->format('H:i');
-        $avaliable=$request->avaliable;
+        $avaliable="sim";
         $suites_id=$request->suites_id;
-        $users_id=auth()->id();
+        $users_id=$request->users_id;
         //$users_id=$request->users_id;
 
         //verifica se já tem data marcada para a suite escolhida
